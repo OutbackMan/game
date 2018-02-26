@@ -38,27 +38,30 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
     return rgame_status(RGAME_SUCCESS, "Function success", __FILE__, __func__, __LINE__);
 }
 
-const rgame_status_t rgame_handle_events(const struct RGame rgame_instance[restrict static 1])
+void rgame_handle_events(const struct RGame rgame_instance[restrict static 1])
 {
     SDL_Event event = {0};
-    SDL_Poll(&event);
     
-    switch (event.type) {
-        case SDL_QUIT:
-            rgame_instance->is_running = false;
-            break;
-        default:
-            break;
-    }
+	if (SDL_Poll(&event) == 1) {
     
-    return rgame_status(RGAME_SUCCESS, "Function success", __FILE__, __func__, __LINE__);
+		switch (event.type) {
+			case SDL_QUIT:
+				rgame_instance->is_running = false;
+				break;
+			default:
+				break;
+		}
+	}
 }
 
 void rgame_update();
 
 const rgame_status_t rgame_render(const struct RGame* rgame_instance[restrict static 1])
 {
-    SDL_RenderClear(rgame_instance->renderer);
+    if (SDL_RenderClear(rgame_instance->renderer) < 0) {
+		return rgame_status(RGAME_SDL_ERROR, SDL_GetError(), __FILE__, __func__, __LINE__);
+	}
+
     SDL_RenderPresent(rgame_instance->renderer);
     
     return rgame_status(RGAME_SUCCESS, "Function success", __FILE__, __func__, __LINE__);
