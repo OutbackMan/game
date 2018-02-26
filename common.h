@@ -22,8 +22,6 @@
 static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
 {
-	assert(line_number >= 0);
-
 	#ifdef WANT_LOGGING
 		fprintf(stderr, "[RGAME_LOG] %s (%s:%s:%d).\n", msg, file_name, function_name, line_number);
 	#else
