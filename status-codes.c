@@ -1,5 +1,5 @@
 #include "status-codes.h"
-#include "common.h" // define WANT_LOGGING
+#include "common.h" 
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
@@ -22,10 +22,10 @@ static const char* lookup_status_code_string(rgame_status_t status_code)
 	}
 	
 	static const char* status_code_strings[NUMBER_OF_STATUS_CODES] = {
-		"[RGAME_ERROR]",
-		"[RGAME_NULL_ARGUMENT] Null argument passed to callee which requires a non-null argument",
+		"[RGAME_ERROR] Specific RGame operation encountered an error",
+		"[RGAME_NULL_ARGUMENT] Null argument passed to RGame function which requires a non-null argument",
 		"[RGAME_SDL_ERROR]",
-		"[RGAME_SUCCESS]"
+		"[RGAME_SUCCESS] Specific RGame operation completed successfully",
 	};
 	
 	return status_code_strings[status_code];
@@ -42,8 +42,13 @@ const rgame_status_t rgame_status(const rgame_status_t status_code, const char f
 	assert(is_valid_status_code(status_code));
 	
     #ifdef WANT_LOGGING
-        fprintf(stderr, "%s %s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
-				(status_code == RGAME_SDL_ERROR ? SDL_GetError() : ""), file_name, function_name, line_number, clean_errno());
+		if (status_code == RGAME_SDL_ERROR) {
+			fprintf(stderr, "%s %s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
+				SDL_GetError(), file_name, function_name, line_number, clean_errno());
+		} else {
+			fprintf(stderr, "%s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
+				file_name, function_name, line_number, clean_errno());
+		}
     #else
         return status_code;
     #endif
@@ -58,5 +63,4 @@ const char* str_rgame_status(rgame_status_t status_code)
 
 	return message_buffer;
 }
-
 
