@@ -1,5 +1,6 @@
 #include "rgame.h"
 #include "status-codes.h"
+#include "debug.h"
 #include <stdbool.h>
 
 // __STDC_VERSION__ == 201112L
@@ -7,7 +8,7 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
 {
     // Check parameters
     if (rgame == NULL) {
-        debug_error("Null argument passed to callee which requires a non-null argument."); // Log error with context
+        debug_error("Null argument passed to callee which requires a non-null argument."); // [RGAME_ERROR] msg (file:func:line)
         return RGAME_ERROR;
     }
     
@@ -16,7 +17,7 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
         return RGAME_SDL_ERROR;
     }
     
-    debug_log("SDL subsystems successfully initialised.");
+    debug_log("SDL subsystems successfully initialised."); // [RGAME_LOG]
     
     int window_flags = 0;
     
@@ -42,7 +43,7 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
     
     rgame->is_running = true;
     
-    
+    return RGAME_SUCCESS;
 }
 
 void rgame_handle_events()
