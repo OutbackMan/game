@@ -49,9 +49,9 @@ const rgame_status_t rgame_status(const rgame_status_t status_code, const char f
 			fprintf(stderr, "%s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
 				file_name, function_name, line_number, clean_errno());
 		}
-    #else
-        return status_code;
-    #endif
+	#endif
+	
+	return status_code;
 }
 
 const char* str_rgame_status(rgame_status_t status_code)
