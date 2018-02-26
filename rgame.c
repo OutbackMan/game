@@ -6,10 +6,10 @@
 rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_pos, int width, int height, bool want_fullscreen, struct RGame* rgame_instance[static 1])
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        return rgame_status(RGAME_SDL_ERROR, SDL_GetError(), __FILE__, __func__, __LINE__);
+        return RGAME_STATUS(RGAME_SDL_ERROR);
     }
     
-    rgame_log("SDL subsystems successfully initialised", __FILE__, __func__, __LINE__);
+    RGAME_LOG("SDL subsystems successfully initialised");
     
     int window_flags = 0;
     
@@ -20,22 +20,22 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
     rgame_instance->window = SDL_CreateWindow(title, x_pos, y_pos, width, height, window_flags);
     
     if (rgame_instance->window == NULL) {
-        return rgame_status(RGAME_SDL_ERROR, SDL_GetError(), __FILE__, __func__, __LINE__);
+        return RGAME_STATUS(RGAME_SDL_ERROR);
     }
     
-    rgame_log("SDL window created", __FILE__, __func__, __LINE__);
+    RGAME_LOG("SDL window created");
     
     rgame_instance->renderer = SDL_CreateRenderer(rgame->window, -1, 0);
     
     if (rgame_instance->renderer == NULL) {
-        return rgame_status(RGAME_SDL_ERROR, SDL_GetError(), __FILE__, __func__, __LINE__);
+        return RGAME_STATUS(RGAME_SDL_ERROR);
     }
     
-    rgame_log("SDL renderer created", __FILE__, __func__, __LINE__);
+    RGAME_LOG("SDL renderer created");
     
     rgame_instance->is_running = true;
     
-    return rgame_status(RGAME_SUCCESS, "Function success", __FILE__, __func__, __LINE__);
+    return RGAME_STATUS(RGAME_SUCCESS);
 }
 
 void rgame_handle_events(const struct RGame rgame_instance[restrict static 1])
@@ -59,12 +59,12 @@ void rgame_update();
 const rgame_status_t rgame_render(const struct RGame* rgame_instance[restrict static 1])
 {
     if (SDL_RenderClear(rgame_instance->renderer) < 0) {
-		return rgame_status(RGAME_SDL_ERROR, SDL_GetError(), __FILE__, __func__, __LINE__);
+		return RGAME_STATUS(RGAME_SDL_ERROR);
 	}
 
     SDL_RenderPresent(rgame_instance->renderer);
     
-    return rgame_status(RGAME_SUCCESS, "Function success", __FILE__, __func__, __LINE__);
+    return RGAME_STATUS(RGAME_SUCCESS);
 }
 
 void rgame_clean();
