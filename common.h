@@ -1,6 +1,8 @@
 #ifndef __common_h__
 #define __common_h__
 
+#include <assert.h>
+
 #if __STDC_VERSION__ == 201112L
 #define HAVE_C11
 #endif
@@ -9,10 +11,24 @@
 #error "RGame requires a compiler with C11 capabilities."
 #endif
 
-#define 1D_ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
+#if !defined(NDEBUG)
+#define IN_DEBUG_MODE
+#endif
 
-// min, max, abs, setbit, clearbit, togglebit, getmsb, getlsb
+#if defined(IN_DEBUG_MODE) || defined(LOGGING) // Specify with -D LOGGING
+#define WANT_LOGGING
+#endif
 
-// Other gcc macros
+static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
+					const char function_name[restrict static 1], const int line_number)
+{
+	assert(line_number >= 0);
+
+	#ifdef WANT_LOGGING
+		fprintf(stderr, "[RGAME_LOG] %s (%s:%s:%d).\n", msg, file_name, function_name, line_number);
+	#else
+		return;
+	#endif
+}
 
 #endif
