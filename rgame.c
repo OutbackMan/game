@@ -1,20 +1,16 @@
 #include "rgame.h"
 #include "common.h"
 #include "status-codes.h"
-#include "debug.h"
 #include <stdbool.h>
 
 rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_pos, int width, int height, bool want_fullscreen, struct RGame* restrict rgame_instance)
 {
-    // Check parameters
     if (rgame_instance == NULL) {
-        rgame_error("Null argument passed to callee which requires a non-null argument");
-        return RGAME_ERROR;
+        return rgame_status_null_argument(__FILE__, __func__, __LINE__);
     }
     
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        rgame_sdl_error(SDL_GetError());
-        return RGAME_SDL_ERROR;
+        return rgame_status_sdl_error(__FILE__, __func__, __LINE__);
     }
     
     rgame_log("SDL subsystems successfully initialised");
@@ -27,16 +23,18 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
     
     rgame_instance->window = SDL_CreateWindow(title, x_pos, y_pos, width, height, window_flags);
     
-    if (rgame_instance->window == 0) {
-        // Handle error
+    if (rgame_instance->window == NULL) {
+        rgame_sdl_error(SDL_GetError());
+        return RGAME_SDL_ERROR;
     }
     
     rgame_log("SDL window created");
     
     rgame_instance->renderer = SDL_CreateRenderer(rgame->window, -1, 0);
     
-    if (rgame_instance->renderer == 0) {
-        // Handle error
+    if (rgame_instance->renderer == NULL) {
+        rgame_sdl_error(SDL_GetError());
+        return RGAME_SDL_ERROR;
     }
     
     rgame_log("SDL renderer created");
