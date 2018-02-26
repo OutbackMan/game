@@ -42,7 +42,8 @@ const rgame_status_t rgame_status(const rgame_status_t status_code, const char f
 	assert(is_valid_status_code(status_code));
 	
     #ifdef WANT_LOGGING
-        fprintf(stderr, "%s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), file_name, function_name, line_number, clean_errno());
+        fprintf(stderr, "%s %s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
+				(status_code == RGAME_SDL_ERROR ? SDL_GetError() : ""), file_name, function_name, line_number, clean_errno());
     #else
         return status_code;
     #endif
