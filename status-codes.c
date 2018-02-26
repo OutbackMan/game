@@ -37,7 +37,7 @@ static inline const char* clean_errno(void)
 }
 
 const rgame_status_t rgame_status(const rgame_status_t status_code, const char file_name[restrict static 1], 
-							const char function_name[restrict static 1], const int line_number)
+					const char function_name[restrict static 1], const int line_number)
 {
 	assert(is_valid_status_code(status_code));
 	
