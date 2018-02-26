@@ -32,30 +32,19 @@ const rgame_status_t rgame_status(const rgame_status_t status_code)
 	return status_code;
 }
 
-const rgame_status_t rgame_status_log_1(const rgame_status_t status_code, const char file_name[restrict static 1], 
+const rgame_status_t rgame_status_log(const int log_level, const rgame_status_t status_code, const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
 {
 	assert(is_valid_status_code(status_code));
+	assert(is_valid_log_level(log_level));
 	
-    	fprintf(stderr, "%s (%s:%s:%d) %s (errno: %s).\n", lookup_status_code_string(status_code), 
+	if ( (log_level > 1 && status_code != RGAME_SUCCESS) || log_level == 1) {
+		fprintf(stderr, "%s (%s:%s:%d) %s (errno: %s).\n", lookup_status_code_string(status_code), 
 			file_name, function_name, line_number, 
-			(status_code == RGAME_SDL_ERROR ? SDL_GetError() : ""), clean_errno());
-	
-	return status_code;
-}
-
-const rgame_status_t rgame_status_log_2_and_3(const rgame_status_t status_code, const char file_name[restrict static 1], 
-					const char function_name[restrict static 1], const int line_number)
-{
-	assert(is_valid_status_code(status_code));
-	
-	if (status_code != RGAME_SUCCESS) {
-    		fprintf(stderr, "%s (%s:%s:%d) %s (errno: %s).\n", lookup_status_code_string(status_code), 
-				file_name, function_name, line_number, 
-				(status_code == RGAME_SDL_ERROR ? SDL_GetError() : ""), clean_errno());
+			(status_code == RGAME_SDL_ERROR ? SDL_GetError() : ""), clean_errno());	
 	}
 	
-	return status_code;	
+	return status_code;
 }
 
 const char* str_rgame_status(rgame_status_t status_code)
