@@ -10,6 +10,6 @@ typedef enum status_codes {
 
 static const size_t NUMBER_OF_STATUS_CODES = 2;
 
-char* str_rgame_status(rgame_status_t status_code);
+const char* str_rgame_status(rgame_status_t status_code);
 
 #endif
