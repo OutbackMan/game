@@ -8,16 +8,16 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
 {
     // Check parameters
     if (rgame == NULL) {
-        debug_error("Null argument passed to callee which requires a non-null argument."); // [RGAME_ERROR] msg (file:func:line)
+        debug_error("Null argument passed to callee which requires a non-null argument");
         return RGAME_ERROR;
     }
     
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-        // Handle error: printf("%s", SDL_GetError());
+        fprintf(stderr, "[RGAME_SDL_ERROR] %s\n", SDL_GetError());
         return RGAME_SDL_ERROR;
     }
     
-    debug_log("SDL subsystems successfully initialised."); // [RGAME_LOG]
+    debug_log("SDL subsystems successfully initialised"); // [RGAME_LOG]
     
     int window_flags = 0;
     
@@ -31,7 +31,7 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
         // Handle error
     }
     
-    debug_log("SDL window created.");
+    debug_log("SDL window created");
     
     rgame->renderer = SDL_CreateRenderer(rgame->window, -1, 0);
     
@@ -39,7 +39,7 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
         // Handle error
     }
     
-    debug_log("SDL renderer created.");
+    debug_log("SDL renderer created");
     
     rgame->is_running = true;
     
