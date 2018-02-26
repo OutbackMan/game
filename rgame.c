@@ -39,7 +39,7 @@ rgame_status_t rgame_init(const char title[restrict static 1], int x_pos, int y_
     
     rgame_instance->is_running = true;
     
-    return RGAME_SUCCESS;
+    return rgame_status(RGAME_SUCCESS, __FILE__, __func__, __LINE__);
 }
 
 void rgame_handle_events()
