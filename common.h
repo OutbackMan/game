@@ -31,14 +31,17 @@
 #define WANT_LOGGING3
 #endif
 
+#if defined(WANT_LOGGING1) || defined(WANT_LOGGING2)
+#define RGAME_LOG(MSG) \
+		rgame_log(MSG, __FILE__, __func__, __LINE__)
+#else
+#define RGAME_LOG(MSG)
+#endif
+
 static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
 {
-	#if defined(WANT_LOGGING1) || defined(WANT_LOGGING2)
 		fprintf(stderr, "[RGAME_LOG] %s (%s:%s:%d).\n", msg, file_name, function_name, line_number);
-	#else
-		return;
-	#endif
 }
 
 #endif
