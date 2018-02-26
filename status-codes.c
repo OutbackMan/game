@@ -22,10 +22,9 @@ static const char* lookup_status_code_string(rgame_status_t status_code)
 	}
 	
 	static const char* status_code_strings[NUMBER_OF_STATUS_CODES] = {
-		"[RGAME_ERROR] Specific RGame operation encountered an error",
-		"[RGAME_NULL_ARGUMENT] Null argument passed to RGame function which requires a non-null argument",
+		"[RGAME_ERROR]",
 		"[RGAME_SDL_ERROR]",
-		"[RGAME_SUCCESS] Specific RGame operation completed successfully",
+		"[RGAME_SUCCESS]"
 	};
 	
 	return status_code_strings[status_code];
@@ -36,18 +35,18 @@ static inline const char* clean_errno(void)
 	return (errno == 0 ? "None" : strerror(errno));
 }
 
-const rgame_status_t rgame_status(const rgame_status_t status_code, const char file_name[restrict static 1], 
+const rgame_status_t rgame_status(const rgame_status_t status_code, const char msg[restrict static 1], const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
 {
 	assert(is_valid_status_code(status_code));
 	
-    #ifdef WANT_LOGGING
-		if (status_code == RGAME_SDL_ERROR) {
-			fprintf(stderr, "%s %s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
-				SDL_GetError(), file_name, function_name, line_number, clean_errno());
-		} else {
-			fprintf(stderr, "%s (%s:%s:%d)(errno: %s).\n", lookup_status_code_string(status_code), 
-				file_name, function_name, line_number, clean_errno());
+    #ifdef WANT_LOGGING1
+		fprintf(stderr, "%s (%s:%s:%d) %s (errno: %s).\n", lookup_status_code_string(status_code), 
+			file_name, function_name, line_number, msg, clean_errno());
+	#elif defined(WANT_LOGGING2) || defined(WANT_LOGGING3)
+		if (status_code != RGAME_SUCCESS) {
+			fprintf(stderr, "%s (%s:%s:%d) %s (errno: %s).\n", lookup_status_code_string(status_code), 
+				file_name, function_name, line_number, msg, clean_errno());
 		}
 	#endif
 	

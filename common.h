@@ -11,18 +11,30 @@
 #error "RGame requires a compiler with C11 capabilities."
 #endif
 
-#if !defined(NDEBUG)
+#ifndef NDEBUG
 #define IN_DEBUG_MODE
+#define WANT_LOGGING2
 #endif
 
-#if defined(IN_DEBUG_MODE) || defined(LOGGING) // Specify with -D LOGGING
-#define WANT_LOGGING
+// Errors, successes and logs
+#ifdef LOGGING1
+#define WANT_LOGGING1
+#endif
+
+// Errors and logs
+#if defined(LOGGING2) && !defined(WANT_LOGGING2)
+#define WANT_LOGGING2
+#endif
+
+// Errors
+#ifdef LOGGING3
+#define WANT_LOGGING3
 #endif
 
 static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
 {
-	#ifdef WANT_LOGGING
+	#if defined(WANT_LOGGING1) || defined(WANT_LOGGING2)
 		fprintf(stderr, "[RGAME_LOG] %s (%s:%s:%d).\n", msg, file_name, function_name, line_number);
 	#else
 		return;
