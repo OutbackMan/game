@@ -2,6 +2,7 @@
 #define __common_h__
 
 #include <assert.h>
+#include <stdbool.h>
 
 #if __STDC_VERSION__ == 201112L
 #define HAVE_C11
@@ -37,6 +38,15 @@
 #else
 #define RGAME_LOG(MSG)
 #endif
+
+static inline bool is_valid_log_level(const int log_level)
+{
+	if (log_level > 0 && log_level < 3) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
