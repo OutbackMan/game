@@ -30,10 +30,10 @@ static inline bool is_valid_status_code(rgame_status_t status_code)
 		rgame_status_log_2_and_3(STATUS_CODE, __FILE__, __func__, __LINE__)
 #else
 #define RGAME_STATUS(STATUS_CODE) \
-		rgame_status_no_log(STATUS_CODE)
+		rgame_status(STATUS_CODE)
 #endif
 
-const rgame_status_t rgame_status_no_log(const rgame_status_t status_code);
+const rgame_status_t rgame_status(const rgame_status_t status_code);
 const rgame_status_t rgame_status_log_1(const int log_level, const rgame_status_t status_code, const char file_location[restrict static 1], 
 							const char function_name[restrict static 1], const int line_number);
 const rgame_status_t rgame_status_log_2_and_3(const int log_level, const rgame_status_t status_code, const char file_location[restrict static 1], 
