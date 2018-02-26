@@ -26,7 +26,7 @@ static inline const char* clean_errno(void)
 	return (errno == 0 ? "None" : strerror(errno));
 }
 
-const rgame_status_t rgame_status_no_log(const rgame_status_t status_code)
+const rgame_status_t rgame_status(const rgame_status_t status_code)
 {
 	assert(is_valid_status_code(status_code));
 	return status_code;
