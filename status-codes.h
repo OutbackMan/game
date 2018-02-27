@@ -10,11 +10,11 @@ typedef const enum status_codes {
 	RGAME_SUCCESS
 } rgame_status_t;
 
-static const size_t NUMBER_OF_STATUS_CODES = 3
-static const size_t MAX_STATUS_CODE_VALUE = 2;
+static const size_t NUMBER_OF_STATUS_CODES = 3;
 
 static inline const bool is_valid_status_code(rgame_status_t status_code)
 {
+	static const size_t MAX_STATUS_CODE_VALUE = 2;
 	return (status_code < 0 || status_code >= MAX_STATUS_CODE_VALUE);
 }
 
