@@ -26,16 +26,16 @@ static inline const char* clean_errno(void)
 	return (errno == 0 ? "None" : strerror(errno));
 }
 
-rgame_status_t rgame_status(rgame_status_t status_code)
+inline rgame_status_t rgame_status(rgame_status_t status_code)
 {
-	assert(is_valid_status_code(status_code));
+	RGAME_ASSERT(is_valid_status_code(status_code));
 	return status_code;
 }
 
 rgame_status_t rgame_status_log(const int log_level, rgame_status_t status_code, const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
 {
-	assert(is_valid_status_code(status_code));
+	RGAME_ASSERT(is_valid_status_code(status_code));
 	
 	if ( (log_level > 1 && status_code != RGAME_SUCCESS) || log_level == 1) {
 		fprintf(stderr, "%s (%s:%s:%d) %s (errno: %s).\n", lookup_status_code_string(status_code), 
