@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef enum status_codes {
+typedef const enum status_codes {
 	RGAME_ERROR,
 	RGAME_SDL_ERROR,
 	RGAME_SUCCESS
@@ -13,13 +13,9 @@ typedef enum status_codes {
 static const size_t NUMBER_OF_STATUS_CODES = 3
 static const size_t MAX_STATUS_CODE_VALUE = 2;
 
-static inline bool is_valid_status_code(rgame_status_t status_code)
+static inline const bool is_valid_status_code(rgame_status_t status_code)
 {
-	if (status_code < 0 || status_code >= MAX_STATUS_CODE_VALUE) {
-		return false;
-	} else {
-		return true;
-	}
+	return (status_code < 0 || status_code >= MAX_STATUS_CODE_VALUE);
 }
 
 #if defined(WANT_LOGGING1)
@@ -33,8 +29,8 @@ static inline bool is_valid_status_code(rgame_status_t status_code)
 		rgame_status(STATUS_CODE)
 #endif
 
-const rgame_status_t rgame_status(const rgame_status_t status_code);
-const rgame_status_t rgame_status_log(const int log_level, const rgame_status_t status_code, const char file_location[restrict static 1], 
+rgame_status_t rgame_status(rgame_status_t status_code);
+rgame_status_t rgame_status_log(const int log_level, rgame_status_t status_code, const char file_location[restrict static 1], 
 							const char function_name[restrict static 1], const int line_number);
 
 const char* str_rgame_status(rgame_status_t status_code);
