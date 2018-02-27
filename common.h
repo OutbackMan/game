@@ -12,7 +12,7 @@
 #error "RGame requires a compiler with C11 capabilities."
 #endif
 
-#ifndef NDEBUG
+#ifdef DEBUG
 #define IN_DEBUG_MODE
 #define WANT_LOGGING2
 #endif
@@ -23,7 +23,7 @@
 #endif
 
 // Errors and logs
-#if defined(LOGGING2) && !defined(WANT_LOGGING2)
+#if defined(LOGGING2) && !defined(IN_DEBUG_MODE)
 #define WANT_LOGGING2
 #endif
 
@@ -38,15 +38,6 @@
 #else
 #define RGAME_LOG(MSG)
 #endif
-
-static inline bool is_valid_log_level(const int log_level)
-{
-	if (log_level > 0 && log_level < 3) {
-		return true;
-	} else {
-		return false;
-	}
-}
 
 static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
 					const char function_name[restrict static 1], const int line_number)
