@@ -10,29 +10,35 @@ typedef const enum status_codes {
 	RGAME_SUCCESS
 } rgame_status_t;
 
+// Want these available
 static const size_t NUMBER_OF_STATUS_CODES = 3;
+static const size_t MINIMUM_STATUS_CODE_VALUE = 0;
+static const size_t MAXIMUM_STATUS_CODE_VALUE = 2;
 
-static inline const bool is_valid_status_code(rgame_status_t status_code)
-{
-	static const size_t MAX_STATUS_CODE_VALUE = 2;
-	return (status_code < 0 || status_code >= MAX_STATUS_CODE_VALUE);
+rgame_status_t return_rgame_status(rgame_status_t status_code);
+const char* rgame_status_code_message(rgame_status_t status_code);
+const char* rgame_status_code_name(rgame_status_t status_code);
+
+#define UV_ERRNO_MAP(XX) \
+	XX(E2BIG, "argument list too long") \
+	XX(EACCES, "permission denied") \
+
+#define UV_STRERROR_GEN(name, msg) case UV_ ## name: return msg;
+const char* uv_strerror(int err) {
+	switch (err) {
+		UV_ERRNO_MAP(UV_STRERROR_GEN)		
+	}
+	return uv__unknown_err_code(err);
 }
+#undef UV_STRERROR_GEN
 
-#if defined(WANT_LOGGING1)
-#define RGAME_STATUS(STATUS_CODE) \
-		rgame_status_log(1, STATUS_CODE, __FILE__, __func__, __LINE__)
-#elif defined(WANT_LOGGING2) || defined(WANT_LOGGING3)
-#define RGAME_STATUS(STATUS_CODE) \
-		rgame_status_log(3, STATUS_CODE, __FILE__, __func__, __LINE__)
-#else
-#define RGAME_STATUS(STATUS_CODE) \
-		rgame_status(STATUS_CODE)
-#endif
 
-rgame_status_t rgame_status(rgame_status_t status_code);
-rgame_status_t rgame_status_log(const int log_level, rgame_status_t status_code, const char file_location[restrict static 1], 
-							const char function_name[restrict static 1], const int line_number);
+typedef enum {
+#define XX(code, _) UV_ ## code = UV__ ## code,
+  UV_ERRNO_MAP(XX)
+#undef XX
+  UV_ERRNO_MAX = UV__EOF - 1
+} uv_errno_t;
 
-const char* str_rgame_status(rgame_status_t status_code);
 
 #endif

@@ -33,33 +33,4 @@ static inline void rgame_assert(const char expression[restrict static 1], const 
 	raise(SIGABRT);
 }
 
-// MOVE INTO logging.h
-// Errors, successes and logs
-#ifdef LOGGING1
-#define WANT_LOGGING1
-#endif
-
-// Errors and logs
-#if defined(LOGGING2) || defined(IN_DEBUG_MODE)
-#define WANT_LOGGING2
-#endif
-
-// Errors
-#ifdef LOGGING3
-#define WANT_LOGGING3
-#endif
-
-#if defined(WANT_LOGGING1) || defined(WANT_LOGGING2)
-#define RGAME_LOG(MSG) \
-		rgame_log(MSG, __FILE__, __func__, __LINE__)
-#else
-#define RGAME_LOG(MSG)
-#endif
-
-static inline void rgame_log(const char msg[restrict static 1], const char file_name[restrict static 1], 
-					const char function_name[restrict static 1], const int line_number)
-{
-		fprintf(stderr, "[RGAME_LOG] %s (%s:%s:%d).\n", msg, file_name, function_name, line_number);
-}
-
 #endif

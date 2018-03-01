@@ -1,4 +1,5 @@
 #include "status-codes.h"
+#include "logging.h"
 #include "common.h" 
 #include <stddef.h>
 #include <stdbool.h>
@@ -26,7 +27,7 @@ static inline const char* clean_errno(void)
 	return (errno == 0 ? "None" : strerror(errno));
 }
 
-inline rgame_status_t rgame_status(rgame_status_t status_code)
+rgame_status_t return_rgame_status(rgame_status_t status_code)
 {
 	RGAME_ASSERT(is_valid_status_code(status_code));
 	return status_code;
